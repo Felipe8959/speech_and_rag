@@ -1,20 +1,58 @@
 # Transcrição de Áudio e Respostas Automáticas com IA
 
-Este projeto implementa uma aplicação de captura de áudio, transcrição, recuperação de informações usando um modelo RAG (Recuperação de Informação) e geração de respostas automáticas utilizando a API GPT-3.5.
+Este projeto implementa uma aplicação de captura de áudio, transcrição, recuperação de informações usando um modelo RAG (Recuperação de Informação) e geração de respostas automáticas.
 
 ## Funcionalidades
 
 - Captura de áudio do sistema ou de microfones.
 - Transcrição de áudio utilizando o Google Speech Recognition.
 - Recuperação de manifestações similares em uma base de dados (usando TF-IDF e similaridade de cosseno).
-- Geração de respostas automáticas com base em manifestações anteriores e a API GPT-3.5.
-- Interface gráfica para interação com o sistema (Tkinter).
+- Geração de respostas automáticas com base em manifestações anteriores.
+- Interface gráfica para interação com o sistema.
 
-## Requisitos
+## Como Executar o Projeto
 
-### Bibliotecas Necessárias
+1. Clone o repositório para sua máquina:
 
-Você pode instalar todas as bibliotecas necessárias executando o comando abaixo:
+```bash
+git clone https://github.com/SEU_USUARIO/transcricao_audio_rag.git
+cd transcricao_audio_rag
+```
+
+2. Instale as dependências necessárias:
 
 ```bash
 pip install -r requirements.txt
+```
+
+3. Execute o script principal para iniciar a interface gráfica:
+```bash
+python speech_audio.py
+```
+
+## Fluxo do Projeto
+
+1. Captura de Áudio: O sistema captura áudio da entrada ou saída de áudio do sistema.
+
+2. Transcrição: O áudio capturado é transcrito em texto utilizando a API do Google Speech Recognition.
+
+3. Recuperação de Informações: A transcrição é usada para buscar manifestações similares em uma base de dados utilizando TF-IDF e similaridade de cosseno.
+
+4. Resposta Automática: A resposta da manifestação anterior é usada como contexto para gerar uma nova resposta automática.
+
+## Configurações Opcionais
+
+Você pode alterar o dispositivo de entrada de áudio selecionando-o na interface gráfica. O dispositivo escolhido será salvo como padrão para execuções futuras.
+
+## Estrutura do Projeto
+
+rag.py: Contém a lógica de recuperação de informações utilizando TF-IDF e geração de respostas automáticas com GPT-3.5.
+
+speech_audio.py: Script principal que gerencia a captura de áudio, transcrição e interação com o usuário.
+
+dados_exemplo.xlsx: Exemplo de base de dados utilizada para recuperação de manifestações e respostas.
+
+
+## Exemplo de Uso
+
+Ao iniciar a aplicação, selecione o dispositivo de áudio, capture e transcreva o áudio. O sistema automaticamente buscará manifestações similares na base de dados e gerará uma resposta automática.
