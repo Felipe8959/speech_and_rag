@@ -1,0 +1,9 @@
+sounddevice
+numpy
+speechrecognition
+soundfile
+nltk
+openai
+pandas
+scikit-learn
+tkinter
