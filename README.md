@@ -30,27 +30,17 @@ pip install -r requirements.txt
 python speech_audio.py
 ```
 
-## Fluxo do Projeto
-
-1. Captura de Áudio: O sistema captura áudio da entrada ou saída de áudio do sistema.
-
-2. Transcrição: O áudio capturado é transcrito em texto utilizando a API do Google Speech Recognition.
-
-3. Recuperação de Informações: A transcrição é usada para buscar manifestações similares em uma base de dados utilizando TF-IDF e similaridade de cosseno.
-
-4. Resposta Automática: A resposta da manifestação anterior é usada como contexto para gerar uma nova resposta automática.
-
 ## Configurações Opcionais
 
 Você pode alterar o dispositivo de entrada de áudio selecionando-o na interface gráfica. O dispositivo escolhido será salvo como padrão para execuções futuras.
 
 ## Estrutura do Projeto
 
-rag.py: Contém a lógica de recuperação de informações utilizando TF-IDF e geração de respostas automáticas com GPT-3.5.
+`rag.py`: Contém a lógica de recuperação de informações utilizando TF-IDF e geração de respostas automáticas com GPT-3.5.
 
-speech_audio.py: Script principal que gerencia a captura de áudio, transcrição e interação com o usuário.
+`speech_audio.py`: Script principal que gerencia a captura de áudio, transcrição e interação com o usuário.
 
-dados_exemplo.xlsx: Exemplo de base de dados utilizada para recuperação de manifestações e respostas.
+`dados_exemplo.xlsx`: Exemplo de base de dados utilizada para recuperação de manifestações e respostas.
 
 
 ## Exemplo de Uso
