@@ -1,12 +1,18 @@
-import sounddevice as sd
-import numpy as np
-import speech_recognition as sr
-import soundfile as sf
-import threading
-import tkinter as tk
-from tkinter.scrolledtext import ScrolledText
-from rag import recuperar_resposta, gerar_resposta_automatica
+import os
 import json
+import threading
+import re
+
+import numpy as np
+import pandas as pd
+import sounddevice as sd
+import soundfile as sf
+import speech_recognition as sr
+import tkinter as tk
+from tkinter import messagebox
+from tkinter.scrolledtext import ScrolledText
+
+from rag import recuperar_resposta, gerar_resposta_automatica, preprocess_text
 
 # Função para salvar o dispositivo padrão
 def salvar_dispositivo_padrao(device_id):
@@ -99,14 +105,17 @@ def recuperar_informacoes_da_base():
 
     device_info = lista_dispositivos.get(selecao)
     device_id = int(device_info.split(' ')[0])  # Extrai o número do índice
-    
+
     # Recuperar a transcrição com o dispositivo selecionado
     transcricao = capturar_e_transcrever(device_id)
 
+    transcricao_preprocessada = preprocess_text(transcricao)
+    resultado_texto.insert(tk.END, f"\nTranscrição pré-processada:\n{transcricao_preprocessada}\n")
+
     # Recuperar resposta e manifestação similar do RAG
     global resposta_recuperada, manifestacao_similar
-    resposta_recuperada, manifestacao_similar = recuperar_resposta(transcricao)
-    
+    resposta_recuperada, manifestacao_similar = recuperar_resposta(transcricao)  # Já pré-processado internamente
+
     # Exibir a manifestação similar e a resposta recuperada
     resultado_texto.insert(tk.END, f"\nMensagem recuperada:\n{manifestacao_similar}\n")
     resultado_texto.insert(tk.END, f"\nResposta recuperada:\n{resposta_recuperada}\n")
@@ -263,4 +272,3 @@ atualizar_dispositivos()
 
 # Inicia o loop do Tkinter
 root.mainloop()
-
