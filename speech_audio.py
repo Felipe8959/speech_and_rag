@@ -2,7 +2,6 @@ import os
 import json
 import threading
 import re
-
 import numpy as np
 import pandas as pd
 import sounddevice as sd
@@ -11,7 +10,6 @@ import speech_recognition as sr
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.scrolledtext import ScrolledText
-
 from rag import recuperar_resposta, gerar_resposta_automatica, preprocess_text
 
 # Função para salvar o dispositivo padrão
@@ -28,14 +26,14 @@ def carregar_dispositivo_padrao():
     except FileNotFoundError:
         return None
 
-# Variáveis globais para armazenar os resultados recuperados
+# resultados recuperados
 resposta_recuperada = ""
 manifestacao_similar = ""
 mensagem_cliente = ""
 
 # Parâmetros de gravação
-SAMPLE_RATE = 48000   # Taxa de amostragem (Hz)
-BLOCO_DURACAO = 1  # Duração de cada bloco de captura em segundos
+SAMPLE_RATE = 48000     # Taxa de amostragem (Hz)
+BLOCO_DURACAO = 1       # Duração de cada bloco de captura em segundos
 gravacao_ativa = False  # Variável de controle para parar a gravação
 
 # Função para salvar o áudio capturado como um arquivo .wav
@@ -62,7 +60,7 @@ def capturar_audio_sistema(device_id):
         print(f"Erro durante a captura de áudio: {e}")
         resultado_texto.insert(tk.END, f"Erro na captura de áudio: {e}\n", "resposta_vermelha")
 
-    salvar_audio(audio_total, 'audio_capturado.wav')  # Salva o áudio
+    # salvar_audio(audio_total, 'audio_capturado.wav')  # Salva o áudio
     return audio_total
 
 # Função para transcrever o áudio
@@ -80,21 +78,49 @@ def transcrever_audio(audio):
     except sr.RequestError as e:
         return f"Erro na requisição: {e}"
 
+import whisper
+
+# # Função para transcrever o áudio usando Whisper
+# # Resultado não foi como esperado, desconsiderei o uso
+# def transcrever_audio_com_whisper(audio):
+#     try:
+#         model = whisper.load_model("medium")
+#         temp_filename = "temp_audio.wav"
+
+#         # Salva o áudio em um arquivo temporário usando soundfile
+#         sf.write(temp_filename, audio, SAMPLE_RATE, subtype='PCM_16')
+
+#         # Transcreve o arquivo de áudio usando Whisper
+#         print("Transcrevendo o áudio com Whisper...")
+#         result = model.transcribe(temp_filename, language="pt")
+#         texto = result['text']
+#         print(f"Transcrição: {texto}")
+
+#         # Remove o arquivo temporário após o uso
+#         # os.remove(temp_filename)
+#         return texto
+
+#     except Exception as e:
+#         print(f"Erro ao transcrever com Whisper: {e}")
+#         return "Erro ao transcrever o áudio."
+
+
 # Função para capturar o áudio e transcrever
 def capturar_e_transcrever(device_id):
-    global gravacao_ativa, mensagem_cliente  # Adiciona mensagem_cliente como global
+    global gravacao_ativa, mensagem_cliente
     
     audio = capturar_audio_sistema(device_id)
-    transcricao = transcrever_audio(audio)  # Obtém a transcrição do áudio
+    transcricao = transcrever_audio(audio)
     
-    if transcricao and "Erro" not in transcricao:  # Verifica se a transcrição foi bem-sucedida
+    if transcricao and "Erro" not in transcricao:
         resultado_texto.insert(tk.END, f"Transcrição:\n{transcricao}\n")
-        mensagem_cliente = transcricao  # Armazena a transcrição na variável mensagem_cliente
+        mensagem_cliente = transcricao
     else:
         resultado_texto.insert(tk.END, "Erro: Não foi possível transcrever o áudio.\n", "resposta_vermelha")
-        mensagem_cliente = ""  # Limpa a variável se a transcrição falhar
+        mensagem_cliente = ""
     
     return transcricao
+
 
 # Função para recuperar as informações da base com base na transcrição
 def recuperar_informacoes_da_base():
